@@ -141,8 +141,7 @@ func resourceShellScriptCustomizeDiff(d *schema.ResourceDiff, i interface{}) (er
 	}
 
 	if d.HasChange("lifecycle_commands") || d.HasChange("interpreter") {
-		for _, k := range []string{
-			"environment", "sensitive_environment", "working_directory"} {
+		for _, k := range []string{"working_directory"} {
 
 			if d.HasChange(k) {
 				return fmt.Errorf("changes to `lifecycle_commands` and/or `interpreter`" +
