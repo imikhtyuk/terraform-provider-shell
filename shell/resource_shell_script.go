@@ -131,8 +131,8 @@ func resourceShellScriptUpdate(d *schema.ResourceData, meta interface{}) (err er
 	return update(d, meta, []Action{ActionUpdate})
 }
 
-func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) (err error) {
-	update(d, meta, []Action{ActionUpdate})
+func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) error {
+	err = read(d, meta, []Action{ActionUpdate})
 	return delete(d, meta, []Action{ActionDelete})
 }
 
@@ -383,6 +383,7 @@ func delete(d *schema.ResourceData, meta interface{}, stack []Action) error {
 	if e, _ := d.Get("read_error").(string); e != "" {
 		return nil
 	}
+	
 	log.Printf("[DEBUG] Deleting shell script resource...")
 	printStackTrace(stack)
 	l := d.Get("lifecycle_commands").([]interface{})
