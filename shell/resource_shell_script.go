@@ -131,10 +131,10 @@ func resourceShellScriptUpdate(d *schema.ResourceData, meta interface{}) (err er
 	return update(d, meta, []Action{ActionUpdate})
 }
 
-func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) error {
-	// return delete(d, meta, []Action{ActionDelete})
-	return update(d, meta, []Action{ActionUpdate})
-}
+// func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) error {
+// 	// return delete(d, meta, []Action{ActionDelete})
+// 	return update(d, meta, []Action{ActionUpdate})
+// }
 
 func resourceShellScriptCustomizeDiff(d *schema.ResourceDiff, i interface{}) (err error) {
 	if d.Id() == "" {
