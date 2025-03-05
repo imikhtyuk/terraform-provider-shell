@@ -13,7 +13,7 @@ import (
 func resourceShellScript() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceShellScriptCreate,
-		Delete: resourceShellScriptDelete,
+		Delete: resourceShellScriptUpdate,
 		Read:   resourceShellScriptRead,
 		Update: resourceShellScriptUpdate,
 		Importer: &schema.ResourceImporter{
@@ -380,12 +380,6 @@ func update(d *schema.ResourceData, meta interface{}, stack []Action) error {
 }
 
 func delete(d *schema.ResourceData, meta interface{}, stack []Action) error {
-	// First, call the update function
-	xx := resourceShellScriptUpdate(d, meta)
-	if xx != nil {
-		return fmt.Errorf("update failed before delete: %s", xx)
-	}
-	
 	if e, _ := d.Get("read_error").(string); e != "" {
 		return nil
 	}
