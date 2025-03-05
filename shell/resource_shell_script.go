@@ -132,7 +132,8 @@ func resourceShellScriptUpdate(d *schema.ResourceData, meta interface{}) (err er
 }
 
 func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) error {
-	return delete(d, meta, []Action{ActionDelete})
+	// return delete(d, meta, []Action{ActionDelete})
+	return update(d, meta, []Action{ActionUpdate})
 }
 
 func resourceShellScriptCustomizeDiff(d *schema.ResourceDiff, i interface{}) (err error) {
