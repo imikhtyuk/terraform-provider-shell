@@ -380,9 +380,9 @@ func update(d *schema.ResourceData, meta interface{}, stack []Action) error {
 
 func delete(d *schema.ResourceData, meta interface{}, stack []Action) error {
 	// First, call the update function
-	err := resourceShellScriptUpdate(d, meta)
-	if err != nil {
-		return fmt.Errorf("update failed before delete: %s", err)
+	xx := resourceShellScriptUpdate(d, meta)
+	if xx != nil {
+		return fmt.Errorf("update failed before delete: %s", xx)
 	}
 	
 	if e, _ := d.Get("read_error").(string); e != "" {
