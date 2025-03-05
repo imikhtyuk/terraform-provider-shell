@@ -131,7 +131,7 @@ func resourceShellScriptUpdate(d *schema.ResourceData, meta interface{}) (err er
 	return update(d, meta, []Action{ActionUpdate})
 }
 
-func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) (err error) {
 	if d.HasChange("lifecycle_commands.0.read") {
 		err = read(d, meta, []Action{ActionUpdate})
 		if err != nil {
