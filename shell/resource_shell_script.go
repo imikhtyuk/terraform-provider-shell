@@ -13,7 +13,7 @@ import (
 func resourceShellScript() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceShellScriptCreate,
-		Delete: resourceShellScriptUpdate,
+		Delete: resourceShellScriptCreate,
 		Read:   resourceShellScriptRead,
 		Update: resourceShellScriptUpdate,
 		Importer: &schema.ResourceImporter{
@@ -357,7 +357,7 @@ func update(d *schema.ResourceData, meta interface{}, stack []Action) error {
 		SensitiveEnvironment: sensitiveEnvironment,
 		WorkingDirectory:     workingDirectory,
 		Interpreter:          interpreter,
-		Action:               ActionDelete,
+		Action:               ActionUpdate,
 		PreviousOutput:       previousOutput,
 		EnableParallelism:    enableParallelism,
 	}
@@ -379,45 +379,45 @@ func update(d *schema.ResourceData, meta interface{}, stack []Action) error {
 	return nil
 }
 
-func delete(d *schema.ResourceData, meta interface{}, stack []Action) error {
-	if e, _ := d.Get("read_error").(string); e != "" {
-		return nil
-	}
+// func delete(d *schema.ResourceData, meta interface{}, stack []Action) error {
+// 	if e, _ := d.Get("read_error").(string); e != "" {
+// 		return nil
+// 	}
 	
-	log.Printf("[DEBUG] Deleting shell script resource...")
-	printStackTrace(stack)
-	l := d.Get("lifecycle_commands").([]interface{})
-	c := l[0].(map[string]interface{})
-	command := c["delete"].(string)
+// 	log.Printf("[DEBUG] Deleting shell script resource...")
+// 	printStackTrace(stack)
+// 	l := d.Get("lifecycle_commands").([]interface{})
+// 	c := l[0].(map[string]interface{})
+// 	command := c["delete"].(string)
 
-	client := meta.(*Client)
-	envVariables := getEnvironmentVariables(client, d)
-	environment := formatEnvironmentVariables(envVariables)
-	sensitiveEnvVariables := getSensitiveEnvironmentVariables(client, d)
-	sensitiveEnvironment := formatEnvironmentVariables(sensitiveEnvVariables)
-	interpreter := getInterpreter(client, d)
-	workingDirectory := d.Get("working_directory").(string)
-	o, _ := d.GetChange("output")
-	previousOutput := expandOutput(o)
-	enableParallelism := client.config.EnableParallelism
+// 	client := meta.(*Client)
+// 	envVariables := getEnvironmentVariables(client, d)
+// 	environment := formatEnvironmentVariables(envVariables)
+// 	sensitiveEnvVariables := getSensitiveEnvironmentVariables(client, d)
+// 	sensitiveEnvironment := formatEnvironmentVariables(sensitiveEnvVariables)
+// 	interpreter := getInterpreter(client, d)
+// 	workingDirectory := d.Get("working_directory").(string)
+// 	o, _ := d.GetChange("output")
+// 	previousOutput := expandOutput(o)
+// 	enableParallelism := client.config.EnableParallelism
 
-	commandConfig := &CommandConfig{
-		Command:              command,
-		Environment:          environment,
-		SensitiveEnvironment: sensitiveEnvironment,
-		WorkingDirectory:     workingDirectory,
-		Interpreter:          interpreter,
-		Action:               ActionDelete,
-		PreviousOutput:       previousOutput,
-		EnableParallelism:    enableParallelism,
-	}
-	_, err := runCommand(commandConfig)
-	if err != nil {
-		return err
-	}
-	d.SetId("")
-	return nil
-}
+// 	commandConfig := &CommandConfig{
+// 		Command:              command,
+// 		Environment:          environment,
+// 		SensitiveEnvironment: sensitiveEnvironment,
+// 		WorkingDirectory:     workingDirectory,
+// 		Interpreter:          interpreter,
+// 		Action:               ActionDelete,
+// 		PreviousOutput:       previousOutput,
+// 		EnableParallelism:    enableParallelism,
+// 	}
+// 	_, err := runCommand(commandConfig)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	d.SetId("")
+// 	return nil
+// }
 
 //Action is an enum for CRUD operations
 type Action string
