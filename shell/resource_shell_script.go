@@ -132,7 +132,6 @@ func resourceShellScriptUpdate(d *schema.ResourceData, meta interface{}) (err er
 }
 
 func resourceShellScriptDelete(d *schema.ResourceData, meta interface{}) error {
-	_ = read(d, meta, []Action{ActionUpdate})
 	return delete(d, meta, []Action{ActionDelete})
 }
 
